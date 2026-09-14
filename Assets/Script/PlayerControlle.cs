@@ -88,5 +88,15 @@ public class PlayerControlle : MonoBehaviour
             verticalVelocity += gravity * Time.deltaTime;
         }
         controller.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+
+        //8.ldle, Walk, Run 애니메이션
+        float animationSpeed = 0f;
+
+        if (moveDirection.Equals sqrMagnitude > 0.001f)
+        {
+            animationSpeed = isRunning ? 1f : 0.5f;
+        }
+
+        animator.SetFloat("speed", animationSpeed, 0.1f, Time.deltaTime);
     }
 }
