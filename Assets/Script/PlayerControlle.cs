@@ -18,6 +18,8 @@ public class PlayerControlle : MonoBehaviour
 
     private CharacterController controller;
 
+    private float verticalVelocity;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
