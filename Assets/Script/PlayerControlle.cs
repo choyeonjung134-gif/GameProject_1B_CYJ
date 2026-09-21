@@ -45,6 +45,14 @@ public class PlayerControlle : MonoBehaviour
             return;
         }
 
+        //상태와 관계없이 중력은 계속 적용한다.
+        ApplyGravity();
+
+        //Nomal 상태가 아니면 이동 입력을 받지않는다.
+        if (currentState != PlayerState.Normal) return;
+
+        HandleMovement(keyboard);
+
         //1. WASD  입력
         Vector2 input = Vector2.zero;
 
@@ -122,6 +130,18 @@ public class PlayerControlle : MonoBehaviour
             verticalVelocity += gravity * Time.deltaTime;
         }
         controller.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+    }
+
+    public void ChangeState(PlayerState newState)
+    {
+        currentState = newState;
+
+        if(currentState != PlayerState.Normal)
+        {
+            animator.SetFloat("speed", 0);
+        }
+
+        Debug.Log("현재 상태 : " + currentState);
     }
     private void HandleMovement(Keyboard keyboard)
     {
