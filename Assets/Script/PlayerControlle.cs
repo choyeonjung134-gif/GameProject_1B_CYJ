@@ -2,6 +2,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum PlayerState
+{
+    Normal,
+    PickUp,
+}
+
 public class PlayerControlle : MonoBehaviour
 {
 
@@ -19,6 +25,8 @@ public class PlayerControlle : MonoBehaviour
     private CharacterController controller;
 
     private float verticalVelocity;
+
+    private PlayerState currentState = PlayerState.Normal;
 
     private void Awake()
     {
@@ -94,11 +102,39 @@ public class PlayerControlle : MonoBehaviour
         //8.ldle, Walk, Run 애니메이션
         float animationSpeed = 0f;
 
-        if (moveDirection.Equals sqrMagnitude > 0.001f)
+        if (moveDirection. sqrMagnitude > 0.001f)
         {
             animationSpeed = isRunning ? 1f : 0.5f;
         }
 
         animator.SetFloat("speed", animationSpeed, 0.1f, Time.deltaTime);
+    }
+
+    private void ApplyGravity()
+    {
+        // 7.기본 중력
+        if (controller.isGrounded && verticalVelocity < 0f)
+        {
+            verticalVelocity = -2f;
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+        controller.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+    }
+    private void HandleMovement(Keyboard keyboard)
+    {
+        //1. WASD 입력
+        Vector2 input = Vector2.zero;
+
+        if (keyboard.aKey.isPressed)
+            input.x -= 1f;
+        if (keyboard.dKey.isPressed)
+            input.x += 1f;
+        if (keyboard.sKey.isPressed)
+            input.y -= 1f;
+        if (keyboard.wKey.isPressed)
+            input.y += 1f;
     }
 }
